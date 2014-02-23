@@ -3,11 +3,6 @@ package com.sporkinnovations.augmeal.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sporkinnovations.augmeal.R;
-import com.sporkinnovations.augmeal.VenuesActivity;
-import com.sporkinnovations.augmeal.R.id;
-import com.sporkinnovations.augmeal.R.layout;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.sporkinnovations.augmeal.R;
+import com.sporkinnovations.augmeal.VenuesActivity;
 
 public class SpecialAdapter extends BaseAdapter{
 

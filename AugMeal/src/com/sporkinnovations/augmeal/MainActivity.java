@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,9 +74,10 @@ public class MainActivity extends Activity{
 
 	private class MyLocationListener implements LocationListener 
 	{
+		@Override
 		public void onLocationChanged(Location location) {
-			latitude = (double)(location.getLatitude());
-			longitude = (double)location.getLongitude();
+			latitude = location.getLatitude();
+			longitude = location.getLongitude();
 			String text = "Location Updated";
 			Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
 			

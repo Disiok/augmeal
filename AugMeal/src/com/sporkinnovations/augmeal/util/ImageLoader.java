@@ -15,14 +15,13 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.sporkinnovations.augmeal.R;
-import com.sporkinnovations.augmeal.R.drawable;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.widget.ImageView;
+
+import com.sporkinnovations.augmeal.R;
 
 public class ImageLoader {
 	final int stub_id=R.drawable.stub;

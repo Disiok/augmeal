@@ -1,6 +1,7 @@
 package com.sporkinnovations.augmeal.util;
 
 import java.io.File;
+
 import android.content.Context;
 
 public class FileCache {
