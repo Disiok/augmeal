@@ -1,6 +1,5 @@
 package com.sporkinnovations.augmeal;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
