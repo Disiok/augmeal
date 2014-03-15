@@ -38,7 +38,7 @@ public class VenuesActivity extends Activity {
 	private static final String VERSION = "20140222";
 	private static final String DOWNLOAD_PHOTO = "1";
 	
-	private static final String thumbSize = "100x100";
+	private static final String THUMB_SIZE = "100x100";
 	private static final String GET = "GET";
 	
 	public static final String KEY_NAME = "NAME";
@@ -186,7 +186,7 @@ public class VenuesActivity extends Activity {
 								.getJSONArray("items").getJSONObject(0);
 						String prefix = firstImage.getString("prefix");
 						String suffix = firstImage.getString("suffix");
-						String imageUrl = prefix + thumbSize + suffix;
+						String imageUrl = prefix + THUMB_SIZE + suffix;
 						
 						HashMap<String,String> info = new HashMap<String, String>();
 						info.put(KEY_ID, venue.getString("id"));

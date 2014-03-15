@@ -14,19 +14,22 @@ import android.widget.TextView;
 
 import com.sporkinnovations.augmeal.R;
 import com.sporkinnovations.augmeal.VenuesActivity;
+import com.squareup.picasso.Picasso;
 
 public class SpecialAdapter extends BaseAdapter{
 
 	private Activity activity;
 	private ArrayList<HashMap<String, String>> data;
 	private static LayoutInflater inflater = null;
-	public ImageLoader imageLoader;
+	//public ImageLoader imageLoader;
+	public Context context;
 	
 	public SpecialAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
         activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
+        //imageLoader=new ImageLoader(activity.getApplicationContext());
+        context = activity.getApplicationContext();
     }
 	
 	@Override
@@ -50,17 +53,27 @@ public class SpecialAdapter extends BaseAdapter{
 		if (convertView == null){
 			vi = inflater.inflate(R.layout.list_row, null);
 		}
-		TextView venu = (TextView)vi.findViewById(R.id.venue); // title
+		
+		//Locating all views
+		TextView venue = (TextView)vi.findViewById(R.id.venue); // title
 		TextView description = (TextView)vi.findViewById(R.id.description); // artist name
 		ImageView thumb_image= (ImageView)vi.findViewById(R.id.list_image); // thumb image
 
+		//Resolving hashmap
 		HashMap<String, String> venueInfo = new HashMap<String, String>();
 		venueInfo = data.get(position);
+		
+		//Retrieving data
+		String name = venueInfo.get(VenuesActivity.KEY_NAME);
+		String descript = venueInfo.get(VenuesActivity.KEY_LOCATION);
+		String url = venueInfo.get(VenuesActivity.KEY_THUMB_URL);
 
 		// Setting all values in listview
-		venu.setText(venueInfo.get(VenuesActivity.KEY_NAME));
-		description.setText(venueInfo.get(VenuesActivity.KEY_LOCATION));
-		imageLoader.DisplayImage(venueInfo.get(VenuesActivity.KEY_THUMB_URL), thumb_image);
+		venue.setText(name);
+		description.setText(descript);
+		Picasso.with(context).load(url).into(thumb_image);
+		
+		//imageLoader.DisplayImage(venueInfo.get(VenuesActivity.KEY_THUMB_URL), thumb_image);
 		return vi;
 
 
