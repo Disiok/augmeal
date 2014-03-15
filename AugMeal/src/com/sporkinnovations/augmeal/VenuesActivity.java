@@ -66,6 +66,8 @@ public class VenuesActivity extends Activity {
 		//Get List of Names
 		Intent intent = getIntent();
 		coordinate = intent.getStringExtra(MainActivity.LOC_MESSAGE);
+		
+		//Execute AsyncTask to retrieve information and inflate list view
 		new searchNearbyTask().execute(coordinate);
 	}
 
@@ -131,11 +133,7 @@ public class VenuesActivity extends Activity {
 		startActivity(intent);
 	}
 
-	// Uses AsyncTask to create a task away from the main UI thread. This task takes a 
-	// URL string and uses it to create an HttpUrlConnection. Once the connection
-	// has been established, the AsyncTask downloads the contents of the webpage as
-	// an InputStream. Finally, the InputStream is converted into a string, which is
-	// displayed in the UI by the AsyncTask's onPostExecute method.
+	// Uses AsyncTask to download list information and images
 	private class searchNearbyTask extends AsyncTask<String, Integer, ArrayList<HashMap<String,String>>> {
 		@Override
 		protected ArrayList<HashMap<String,String>> doInBackground(String... coordinate) {

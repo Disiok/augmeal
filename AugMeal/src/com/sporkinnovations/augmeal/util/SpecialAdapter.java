@@ -21,17 +21,16 @@ public class SpecialAdapter extends BaseAdapter{
 	private Activity activity;
 	private ArrayList<HashMap<String, String>> data;
 	private static LayoutInflater inflater = null;
-	//public ImageLoader imageLoader;
+
 	public Context context;
-	
-	public SpecialAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
-        activity = a;
-        data=d;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //imageLoader=new ImageLoader(activity.getApplicationContext());
-        context = activity.getApplicationContext();
-    }
-	
+
+	public SpecialAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
+		this.activity = activity;
+		this.data=data;
+		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		context = activity.getApplicationContext();
+	}
+
 	@Override
 	public int getCount() {
 		return data.size();
@@ -49,34 +48,37 @@ public class SpecialAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View vi = convertView;
+		View view = convertView;
 		if (convertView == null){
-			vi = inflater.inflate(R.layout.list_row, null);
+			view = inflater.inflate(R.layout.list_row, null);
 		}
-		
+
 		//Locating all views
-		TextView venue = (TextView)vi.findViewById(R.id.venue); // title
-		TextView description = (TextView)vi.findViewById(R.id.description); // artist name
-		ImageView thumb_image= (ImageView)vi.findViewById(R.id.list_image); // thumb image
+		TextView venue = (TextView)view.findViewById(R.id.venue); // title
+		TextView description = (TextView)view.findViewById(R.id.description); // artist name
+		ImageView thumb_image= (ImageView)view.findViewById(R.id.list_image); // thumb image
 
 		//Resolving hashmap
 		HashMap<String, String> venueInfo = new HashMap<String, String>();
 		venueInfo = data.get(position);
-		
+
 		//Retrieving data
 		String name = venueInfo.get(VenuesActivity.KEY_NAME);
 		String descript = venueInfo.get(VenuesActivity.KEY_LOCATION);
 		String url = venueInfo.get(VenuesActivity.KEY_THUMB_URL);
 
-		// Setting all values in listview
+		// Setting all values in list view
 		venue.setText(name);
 		description.setText(descript);
-		Picasso.with(context).load(url).into(thumb_image);
 		
-		//imageLoader.DisplayImage(venueInfo.get(VenuesActivity.KEY_THUMB_URL), thumb_image);
-		return vi;
+		//Using Picasso Library
+		Picasso.with(context)
+			.load(url)
+			.placeholder(R.drawable.stub)
+			.error(R.drawable.stub)
+			.into(thumb_image);
 
-
+		return view;
 	}
 
 }
