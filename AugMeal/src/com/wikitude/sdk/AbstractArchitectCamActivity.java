@@ -1,4 +1,4 @@
-package com.wikitude.samples;
+package com.wikitude.sdk;
 
 import java.io.IOException;
 import android.annotation.SuppressLint;

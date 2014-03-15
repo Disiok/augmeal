@@ -6,9 +6,9 @@ import android.widget.Toast;
 
 import com.wikitude.architect.ArchitectView.ArchitectUrlListener;
 import com.wikitude.architect.ArchitectView.SensorAccuracyChangeListener;
-import com.wikitude.samples.AbstractArchitectCamActivity;
-import com.wikitude.samples.ArchitectViewHolderInterface;
-import com.wikitude.samples.LocationProvider;
+import com.wikitude.sdk.AbstractArchitectCamActivity;
+import com.wikitude.sdk.ArchitectViewHolderInterface;
+import com.wikitude.sdk.LocationProvider;
 
 public class DishesActivity extends AbstractArchitectCamActivity {
 

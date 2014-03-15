@@ -1,4 +1,4 @@
-package com.wikitude.samples;
+package com.wikitude.sdk;
 
 import android.content.Context;
 import android.location.Location;
@@ -6,7 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.widget.Toast;
 
-import com.wikitude.samples.ArchitectViewHolderInterface.ILocationProvider;
+import com.wikitude.sdk.ArchitectViewHolderInterface.ILocationProvider;
 
 
 
