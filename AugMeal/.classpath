@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/Users/Disiok/git/augmeal/AugMeal/libs/wikitudesdk.jar"/>
-	<classpathentry exported="true" kind="lib" path="picasso-2.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/picasso-2.2.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
