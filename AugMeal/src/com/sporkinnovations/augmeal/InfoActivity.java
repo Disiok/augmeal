@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class InfoActivity extends Activity {
@@ -32,6 +33,10 @@ public class InfoActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+	}
+	public void clicked(View view){
+		Intent intent = new Intent(this, DishesActivity.class);
+		startActivity(intent);
 	}
 
 	@Override

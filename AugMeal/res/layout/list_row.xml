@@ -16,6 +16,7 @@
         android:layout_marginRight="5dip" >
  
         <ImageView
+            android:contentDescription="Venue Image"
             android:id="@+id/list_image"
             android:layout_width="50dip"
             android:layout_height="50dip" />
@@ -32,7 +33,7 @@
         android:text="Venue Title Stub"
         android:textColor="#040404"
         android:typeface="sans"
-        android:textSize="15dip"
+        android:textSize="15sp"
         android:textStyle="bold"/>
  
     <!-- Description -->
@@ -42,14 +43,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/venue"
         android:textColor="#343434"
-        android:textSize="10dip"
+        android:textSize="12sp"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Description Stub" />
  
 
-    <ImageView android:layout_width="20dp"
-        android:layout_height="20dp"
+    <ImageView 
+        android:contentDescription="Arrow"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
         android:src="@drawable/arrow"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>

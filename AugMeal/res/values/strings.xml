@@ -8,5 +8,8 @@
     <string name="loading">Loading Location...</string>
     <string name="title_activity_info">InfoActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_dishes">DishesActivity</string>
+    <string name="title_activity_menue">MenueActivity</string>
+    <string name="compass_accuracy_low">Please re-calibrate compass</string>
 
 </resources>

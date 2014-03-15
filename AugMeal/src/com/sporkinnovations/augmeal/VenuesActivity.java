@@ -34,12 +34,11 @@ public class VenuesActivity extends Activity {
 	private static final String CLIENT_ID = "Q51UZPWJYINNZ4X1WLYQCDDUWKYLCGPN3ZMM2NMKVIY25G5H";
 	private static final String CLIENT_SECRET = "0P2QMRFKXKZWTBN2GVB3R2GSM20Q3R0VRWPXMIC1FOGUJXHA";
 	
-	private static final String searchPath = "venues/search";
-	private static final String venuePath = "venues/";
-	private static final String photoPath = "photos";
-	private static final String version = "20140222";
+	private static final String EXPLORE_PATH = "venues/explore";
+	private static final String VERSION = "20140222";
+	private static final String DOWNLOAD_PHOTO = "1";
 	
-	private static final String thumbSize = "50x50";
+	private static final String thumbSize = "100x100";
 	private static final String GET = "GET";
 	
 	public static final String KEY_NAME = "NAME";
@@ -63,7 +62,6 @@ public class VenuesActivity extends Activity {
 
 		// Show the Up button in the action bar.
 		setupActionBar();
-
 
 		//Get List of Names
 		Intent intent = getIntent();
@@ -141,24 +139,16 @@ public class VenuesActivity extends Activity {
 	private class searchNearbyTask extends AsyncTask<String, Integer, ArrayList<HashMap<String,String>>> {
 		@Override
 		protected ArrayList<HashMap<String,String>> doInBackground(String... coordinate) {
+			
 			ArrayList<HashMap<String,String>> infoList = new ArrayList<HashMap<String,String>>();
 			
-			StringBuilder urlBuilder = new StringBuilder(API_URL);
-			urlBuilder.append(searchPath);
-			urlBuilder.append('?');
-			urlBuilder.append("ll=");
-			urlBuilder.append(coordinate[0]);
-			urlBuilder.append('&');
-
-			//Authorizing
-			urlBuilder.append("client_id=");
-			urlBuilder.append(CLIENT_ID);
-			urlBuilder.append("&client_secret=");
-			urlBuilder.append(CLIENT_SECRET);
-
-			urlBuilder.append("&v=" + version);
-			String url = urlBuilder.toString();
-			System.out.println(url);
+			//Build GET request URL
+			String url = API_URL + EXPLORE_PATH +
+					"?ll=" + coordinate[0] + 
+					"&venuePhotos=" + DOWNLOAD_PHOTO +
+					"&client_id=" + CLIENT_ID +
+					"&client_secret=" +CLIENT_SECRET +
+					"&v=" + VERSION;
 
 			JSONObject responseObject = null;
 			try{
@@ -177,27 +167,42 @@ public class VenuesActivity extends Activity {
 					System.out.println(responseCode);
 				}
 
-				JSONArray venues = responseObject.getJSONObject("response").getJSONArray("venues");
-				int length = venues.length();
-				JSONObject[] venueArray = new JSONObject[length];
+				JSONArray groups = responseObject.getJSONObject("response").getJSONArray("groups");
+				int groupLength = groups.length();
 				
-				//initializing
-				for (int i = 0; i < length; i ++){
-					venueArray[i] = venues.getJSONObject(i);
-					String id = venueArray[i].getString("id");
-
-					//put into Hashmap;
-					HashMap<String, String> info = new HashMap<String, String>();
-					info.put(KEY_NAME, venueArray[i].getString("name"));
-					info.put(KEY_LOCATION, venueArray[i].getJSONObject("location").getString("address"));
-					info.put(KEY_ID, venueArray[i].getString("id"));
-					info.put(KEY_THUMB_URL, getThumbUrl(id));
-					infoList.add(info);
+				//Initializing
+				for (int i = 0; i < groupLength; i ++){
+					JSONArray items = groups.getJSONObject(i).getJSONArray("items");
+					
+					int itemLength = items.length();
+					
+					for (int j = 0; j < itemLength; j++){
+						//Get venue object
+						JSONObject venue = items.getJSONObject(j).getJSONObject("venue");
+						
+						//Resolve image url
+						JSONObject firstImage = venue.getJSONObject("photos")
+								.getJSONArray("groups").getJSONObject(0)
+								.getJSONArray("items").getJSONObject(0);
+						String prefix = firstImage.getString("prefix");
+						String suffix = firstImage.getString("suffix");
+						String imageUrl = prefix + thumbSize + suffix;
+						
+						HashMap<String,String> info = new HashMap<String, String>();
+						info.put(KEY_ID, venue.getString("id"));
+						info.put(KEY_NAME, venue.getString("name"));
+						info.put(KEY_LOCATION, venue.getJSONObject("location").getString("address"));
+						info.put(KEY_THUMB_URL, imageUrl);
+						
+						//Add hashmap of venue into arrayList
+						infoList.add(info);
+					}
 				}
 			}
 			catch(IOException e){
 				System.out.println("IO Wrong");
-			} catch (JSONException e) {
+			} 
+			catch (JSONException e) {
 				System.out.print("JSON Wrong");
 				e.printStackTrace();
 			}
@@ -224,62 +229,6 @@ public class VenuesActivity extends Activity {
 			responseWriter.close();
 			return responseWriter.getBuffer().toString();
 		}
-		private String getThumbUrl(String id){
-			StringBuilder urlBuilder = new StringBuilder(API_URL);
-			urlBuilder.append(venuePath);
-			urlBuilder.append(id);
-			urlBuilder.append('/');
-			urlBuilder.append(photoPath);
-			urlBuilder.append('?');
-
-			//Authorizing
-			urlBuilder.append("client_id=");
-			urlBuilder.append(CLIENT_ID);
-			urlBuilder.append("&client_secret=");
-			urlBuilder.append(CLIENT_SECRET);
-
-			urlBuilder.append("&v=" + version);
-			String url = urlBuilder.toString();
-			System.out.println(url);
-			
-			JSONObject responseObject = null;
-			try{
-				URL aUrl = new URL(url);
-				HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
-				connection.setRequestMethod(GET);
-				connection.connect();
-				int responseCode = connection.getResponseCode();
-				if (responseCode == 200){
-					InputStream inputStream = connection.getInputStream();
-					String response = readStream(inputStream);
-					connection.disconnect();
-					responseObject = new JSONObject(response);
-				}
-				else{
-					System.out.println(responseCode);
-				}
-				
-				JSONObject firstImage = responseObject.getJSONObject("response").getJSONObject("photos").getJSONArray("items").getJSONObject(0);
-				String prefix = firstImage.getString("prefix");
-				String suffix = firstImage.getString("suffix");
-				return prefix + thumbSize + suffix;
-				
-			}
-			catch(IOException e){
-				System.out.println("IO Wrong");
-				e.printStackTrace();
-				return "";
-			} catch (JSONException e) {
-				System.out.print("JSON Wrong");
-				e.printStackTrace();
-				return "";
-			}
-			
-			
-			
-			
-		}
-		
 	}
 
 }
