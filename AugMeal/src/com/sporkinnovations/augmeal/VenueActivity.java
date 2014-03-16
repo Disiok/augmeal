@@ -28,7 +28,7 @@ import android.widget.ListView;
 
 import com.sporkinnovations.augmeal.util.SpecialAdapter;
 
-public class VenuesActivity extends Activity {
+public class VenueActivity extends Activity {
 
 	private static final String API_URL = "https://api.foursquare.com/v2/";
 	private static final String CLIENT_ID = "Q51UZPWJYINNZ4X1WLYQCDDUWKYLCGPN3ZMM2NMKVIY25G5H";
@@ -36,6 +36,7 @@ public class VenuesActivity extends Activity {
 	
 	private static final String EXPLORE_PATH = "venues/explore";
 	private static final String VERSION = "20140222";
+	private static final String SECTION = "food";
 	private static final String DOWNLOAD_PHOTO = "1";
 	
 	private static final String THUMB_SIZE = "100x100";
@@ -44,7 +45,7 @@ public class VenuesActivity extends Activity {
 	public static final String KEY_NAME = "NAME";
 	public static final String KEY_LOCATION = "LOCATION";
 	public static final String KEY_THUMB_URL ="THUMB_URL";
-	public static final String KEY_ID = "ID";
+	public static final String KEY_ID = "KEY_ID";
 	
 	public static final int STATUS = 1;
 	public static final String ID_MESSAGE = "ID_MESSAGE";
@@ -144,6 +145,7 @@ public class VenuesActivity extends Activity {
 			String url = API_URL + EXPLORE_PATH +
 					"?ll=" + coordinate[0] + 
 					"&venuePhotos=" + DOWNLOAD_PHOTO +
+					"&section=" + SECTION +
 					"&client_id=" + CLIENT_ID +
 					"&client_secret=" +CLIENT_SECRET +
 					"&v=" + VERSION;

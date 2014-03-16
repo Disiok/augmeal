@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sporkinnovations.augmeal.R;
-import com.sporkinnovations.augmeal.VenuesActivity;
+import com.sporkinnovations.augmeal.VenueActivity;
 import com.squareup.picasso.Picasso;
 
 public class SpecialAdapter extends BaseAdapter{
@@ -63,9 +63,9 @@ public class SpecialAdapter extends BaseAdapter{
 		venueInfo = data.get(position);
 
 		//Retrieving data
-		String name = venueInfo.get(VenuesActivity.KEY_NAME);
-		String descript = venueInfo.get(VenuesActivity.KEY_LOCATION);
-		String url = venueInfo.get(VenuesActivity.KEY_THUMB_URL);
+		String name = venueInfo.get(VenueActivity.KEY_NAME);
+		String descript = venueInfo.get(VenueActivity.KEY_LOCATION);
+		String url = venueInfo.get(VenueActivity.KEY_THUMB_URL);
 
 		// Setting all values in list view
 		venue.setText(name);

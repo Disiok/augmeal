@@ -20,7 +20,7 @@ public class InfoActivity extends Activity {
 
 		//Display ID
 		Intent intent = getIntent();
-		String id = intent.getStringExtra(VenuesActivity.ID_MESSAGE);
+		String id = intent.getStringExtra(VenueActivity.ID_MESSAGE);
 		TextView t = (TextView) findViewById(R.id.textView);
 		t.setText(id);
 		
@@ -35,7 +35,7 @@ public class InfoActivity extends Activity {
 
 	}
 	public void clicked(View view){
-		Intent intent = new Intent(this, DishesActivity.class);
+		Intent intent = new Intent(this, DishActivity.class);
 		startActivity(intent);
 	}
 

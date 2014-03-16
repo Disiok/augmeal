@@ -65,7 +65,7 @@ public class MainActivity extends Activity{
 		String loc = latitude +"," + longitude;
 
 		//create linkage
-		Intent intent = new Intent(this, VenuesActivity.class);
+		Intent intent = new Intent(this, VenueActivity.class);
 
 		intent.putExtra(LOC_MESSAGE,loc);
 		startActivity(intent);
