@@ -47,7 +47,7 @@ public class DishActivity extends AbstractArchitectCamActivity {
 
 	@Override
 	public int getContentViewId() {
-		return R.layout.activity_dishes;
+		return R.layout.activity_dish;
 	}
 
 	@Override

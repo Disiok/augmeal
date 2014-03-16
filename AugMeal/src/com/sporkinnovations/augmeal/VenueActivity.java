@@ -26,11 +26,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.sporkinnovations.augmeal.util.SpecialAdapter;
+import com.sporkinnovations.augmeal.util.VenueListAdapter;
 
 public class VenueActivity extends Activity {
 
-	private static final String API_URL = "https://api.foursquare.com/v2/";
+	//Foursquare api constants
+	private static final String FOURSQUARE_URL = "https://api.foursquare.com/v2/";
 	private static final String CLIENT_ID = "Q51UZPWJYINNZ4X1WLYQCDDUWKYLCGPN3ZMM2NMKVIY25G5H";
 	private static final String CLIENT_SECRET = "0P2QMRFKXKZWTBN2GVB3R2GSM20Q3R0VRWPXMIC1FOGUJXHA";
 	
@@ -38,20 +39,22 @@ public class VenueActivity extends Activity {
 	private static final String VERSION = "20140222";
 	private static final String SECTION = "food";
 	private static final String DOWNLOAD_PHOTO = "1";
-	
 	private static final String THUMB_SIZE = "100x100";
+		
+	
 	private static final String GET = "GET";
 	
 	public static final String KEY_NAME = "NAME";
 	public static final String KEY_LOCATION = "LOCATION";
 	public static final String KEY_THUMB_URL ="THUMB_URL";
 	public static final String KEY_ID = "KEY_ID";
+	public static final String KEY_MENU_ID = "KEY_MENU_ID";
 	
 	public static final int STATUS = 1;
-	public static final String ID_MESSAGE = "ID_MESSAGE";
+	public static final String HASH_MESSAGE = "HASH_MESSAGE";
 	
 	private ListView list;
-	private SpecialAdapter adapter;
+	private VenueListAdapter adapter;
 	ArrayList<HashMap<String,String>> detailList;
 	String coordinate;
 	
@@ -59,7 +62,7 @@ public class VenueActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_venues);
+		setContentView(R.layout.activity_venu);
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -110,7 +113,7 @@ public class VenueActivity extends Activity {
 		list = (ListView) findViewById(R.id.listView);
 		
 		//Retrieve Adapter
-		adapter = new SpecialAdapter(this, detailList);
+		adapter = new VenueListAdapter(this, detailList);
 		list.setAdapter(adapter);
 		
 		list.setOnItemClickListener(new OnItemClickListener(){
@@ -124,13 +127,12 @@ public class VenueActivity extends Activity {
 	private void getDetailInfo(View view, int ind){
 		//taking latest coordinates
 		HashMap<String, String> venueInfo = detailList.get(ind);
-		System.out.println(ind);
-		String id = venueInfo.get(KEY_ID);
-		System.out.println(id);
+
 		//create linkage
 		Intent intent = new Intent(this, InfoActivity.class);
 
-		intent.putExtra(ID_MESSAGE,id);
+		intent.putExtra(HASH_MESSAGE,venueInfo);
+		intent.putExtra(MainActivity.LOC_MESSAGE, coordinate);
 		startActivity(intent);
 	}
 
@@ -142,7 +144,7 @@ public class VenueActivity extends Activity {
 			ArrayList<HashMap<String,String>> infoList = new ArrayList<HashMap<String,String>>();
 			
 			//Build GET request URL
-			String url = API_URL + EXPLORE_PATH +
+			String url = FOURSQUARE_URL + EXPLORE_PATH +
 					"?ll=" + coordinate[0] + 
 					"&venuePhotos=" + DOWNLOAD_PHOTO +
 					"&section=" + SECTION +
@@ -167,7 +169,8 @@ public class VenueActivity extends Activity {
 					System.out.println(responseCode);
 				}
 
-				JSONArray groups = responseObject.getJSONObject("response").getJSONArray("groups");
+				JSONObject response = responseObject.getJSONObject("response");
+				JSONArray groups = response.getJSONArray("groups");
 				int groupLength = groups.length();
 				
 				//Initializing
@@ -188,6 +191,7 @@ public class VenueActivity extends Activity {
 						String suffix = firstImage.getString("suffix");
 						String imageUrl = prefix + THUMB_SIZE + suffix;
 						
+						//Retrieving menu availability information						
 						HashMap<String,String> info = new HashMap<String, String>();
 						info.put(KEY_ID, venue.getString("id"));
 						info.put(KEY_NAME, venue.getString("name"));

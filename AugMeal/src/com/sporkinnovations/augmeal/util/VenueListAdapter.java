@@ -16,16 +16,15 @@ import com.sporkinnovations.augmeal.R;
 import com.sporkinnovations.augmeal.VenueActivity;
 import com.squareup.picasso.Picasso;
 
-public class SpecialAdapter extends BaseAdapter{
+public class VenueListAdapter extends BaseAdapter{
 
-	private Activity activity;
+
 	private ArrayList<HashMap<String, String>> data;
 	private static LayoutInflater inflater = null;
 
 	public Context context;
 
-	public SpecialAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
-		this.activity = activity;
+	public VenueListAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
 		this.data=data;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		context = activity.getApplicationContext();
@@ -54,9 +53,9 @@ public class SpecialAdapter extends BaseAdapter{
 		}
 
 		//Locating all views
-		TextView venue = (TextView)view.findViewById(R.id.venue); // title
-		TextView description = (TextView)view.findViewById(R.id.description); // artist name
-		ImageView thumb_image= (ImageView)view.findViewById(R.id.list_image); // thumb image
+		TextView venue = (TextView)view.findViewById(R.id.venue);
+		TextView description = (TextView)view.findViewById(R.id.description);
+		ImageView thumb_image= (ImageView)view.findViewById(R.id.list_image);
 
 		//Resolving hashmap
 		HashMap<String, String> venueInfo = new HashMap<String, String>();
@@ -77,7 +76,7 @@ public class SpecialAdapter extends BaseAdapter{
 			.placeholder(R.drawable.stub)
 			.error(R.drawable.stub)
 			.into(thumb_image);
-
+		
 		return view;
 	}
 
