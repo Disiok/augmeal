@@ -34,7 +34,7 @@ public class MainActivity extends Activity{
 			//Setup Location Objects
 			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			locationListener = new MyLocationListener();
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		}
 		else{
 			longitude = savedInstanceState.getDouble("longitude");
@@ -101,17 +101,17 @@ public class MainActivity extends Activity{
 
 		@Override
 		public void onProviderDisabled(String provider) {
-			Toast.makeText( getApplicationContext(),"GPS Disabled",Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(),"GPS Disabled",Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
-			Toast.makeText( getApplicationContext(),"GPS Enabled",Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(),"GPS Enabled",Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			Toast.makeText( getApplicationContext(),"Status Changed",Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(),"Status Changed",Toast.LENGTH_SHORT).show();
 		}
 	}
 
