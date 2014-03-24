@@ -3,8 +3,6 @@ package com.sporkinnovations.augmeal;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.sporkinnovations.augmeal.util.VenueListAdapter;
 
 public class VenueActivity extends Activity {
@@ -138,89 +137,94 @@ public class VenueActivity extends Activity {
 		intent.putExtra(MainActivity.LOC_MESSAGE, coordinate);
 		startActivity(intent);
 	}
+	private ArrayList<HashMap<String,String>> retrieveVenue (String loc){
+		ArrayList<HashMap<String,String>> infoList = new ArrayList<HashMap<String,String>>();
+		
+		//Build GET request URL
+		String url = FOURSQUARE_URL + EXPLORE_PATH +
+				"?ll=" + loc + 
+				"&venuePhotos=" + DOWNLOAD_PHOTO +
+				"&section=" + SECTION +
+				"&client_id=" + CLIENT_ID +
+				"&client_secret=" +CLIENT_SECRET +
+				"&v=" + VERSION;
+
+		JSONObject responseObject = null;
+		
+		try{
+			URL aUrl = new URL(url);
+			HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
+			connection.setRequestMethod(GET);
+			//Initializing Connection
+			connection.connect();
+			int responseCode = connection.getResponseCode();
+			if (responseCode == 200){
+				//Retrieving Stream
+				InputStream inputStream = connection.getInputStream();
+				
+				//Retrieving JSON String
+				String response = IOUtils.toString(inputStream);
+				
+				connection.disconnect();
+				responseObject = new JSONObject(response);
+			}
+			else{
+				System.out.println(responseCode);
+			}
+			
+			
+			
+			JSONObject response = responseObject.getJSONObject("response");
+			JSONArray groups = response.getJSONArray("groups");
+			int groupLength = groups.length();
+			
+			//Initializing
+			for (int i = 0; i < groupLength; i ++){
+				JSONArray items = groups.getJSONObject(i).getJSONArray("items");
+				
+				int itemLength = items.length();
+				
+				for (int j = 0; j < itemLength; j++){
+					//Get venue object
+					JSONObject venue = items.getJSONObject(j).getJSONObject("venue");
+					
+					//Resolve image url
+					JSONObject firstImage = venue.getJSONObject("photos")
+							.getJSONArray("groups").getJSONObject(0)
+							.getJSONArray("items").getJSONObject(0);
+					String prefix = firstImage.getString("prefix");
+					String suffix = firstImage.getString("suffix");
+					String imageUrl = prefix + THUMB_SIZE + suffix;
+					
+					//Retrieving menu availability information						
+					HashMap<String,String> info = new HashMap<String, String>();
+					info.put(KEY_ID, venue.getString("id"));
+					info.put(KEY_NAME, venue.getString("name"));
+					info.put(KEY_LOCATION, venue.getJSONObject("location").getString("address"));
+					info.put(KEY_THUMB_URL, imageUrl);
+					
+					//Add hashmap of venue into arrayList
+					infoList.add(info);
+				}
+			}
+			
+			System.out.println("I finished resolving all the fucking JSON");
+		}
+		catch(IOException e){
+			System.out.println("IO Wrong");
+		} 
+		catch (JSONException e) {
+			System.out.print("JSON Wrong");
+			e.printStackTrace();
+		}
+		return infoList;
+	}
 
 	// Uses AsyncTask to download list information and images
 	private class searchNearbyTask extends AsyncTask<String, Integer, ArrayList<HashMap<String,String>>> {
 		@Override
 		protected ArrayList<HashMap<String,String>> doInBackground(String... coordinate) {
-			
-			ArrayList<HashMap<String,String>> infoList = new ArrayList<HashMap<String,String>>();
-			
-			//Build GET request URL
-			String url = FOURSQUARE_URL + EXPLORE_PATH +
-					"?ll=" + coordinate[0] + 
-					"&venuePhotos=" + DOWNLOAD_PHOTO +
-					"&section=" + SECTION +
-					"&client_id=" + CLIENT_ID +
-					"&client_secret=" +CLIENT_SECRET +
-					"&v=" + VERSION;
-
-			JSONObject responseObject = null;
-			try{
-				URL aUrl = new URL(url);
-				HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
-				connection.setRequestMethod(GET);
-				System.out.println("Starting to connect");
-				connection.connect();
-				int responseCode = connection.getResponseCode();
-				if (responseCode == 200){
-					InputStream inputStream = connection.getInputStream();
-					System.out.println("I got the fucking stream");
-					String response = IOUtils.toString(inputStream);
-					System.out.println("I got the fucking response");
-					connection.disconnect();
-					responseObject = new JSONObject(response);
-				}
-				else{
-					System.out.println(responseCode);
-				}
-				
-				
-
-				JSONObject response = responseObject.getJSONObject("response");
-				JSONArray groups = response.getJSONArray("groups");
-				int groupLength = groups.length();
-				
-				//Initializing
-				for (int i = 0; i < groupLength; i ++){
-					JSONArray items = groups.getJSONObject(i).getJSONArray("items");
-					
-					int itemLength = items.length();
-					
-					for (int j = 0; j < itemLength; j++){
-						//Get venue object
-						JSONObject venue = items.getJSONObject(j).getJSONObject("venue");
-						
-						//Resolve image url
-						JSONObject firstImage = venue.getJSONObject("photos")
-								.getJSONArray("groups").getJSONObject(0)
-								.getJSONArray("items").getJSONObject(0);
-						String prefix = firstImage.getString("prefix");
-						String suffix = firstImage.getString("suffix");
-						String imageUrl = prefix + THUMB_SIZE + suffix;
-						
-						//Retrieving menu availability information						
-						HashMap<String,String> info = new HashMap<String, String>();
-						info.put(KEY_ID, venue.getString("id"));
-						info.put(KEY_NAME, venue.getString("name"));
-						info.put(KEY_LOCATION, venue.getJSONObject("location").getString("address"));
-						info.put(KEY_THUMB_URL, imageUrl);
-						
-						//Add hashmap of venue into arrayList
-						infoList.add(info);
-					}
-				}
-				
-				System.out.println("I finished resolving all the fucking JSON");
-			}
-			catch(IOException e){
-				System.out.println("IO Wrong");
-			} 
-			catch (JSONException e) {
-				System.out.print("JSON Wrong");
-				e.printStackTrace();
-			}
-			return infoList;
+			return retrieveVenue(coordinate[0]);		
 		}
 		// onPostExecute displays the results of the AsyncTask.
 		@Override
