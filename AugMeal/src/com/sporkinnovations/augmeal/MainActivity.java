@@ -88,6 +88,7 @@ public class MainActivity extends Activity{
 			b.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					System.out.println("I just clicked the fucking button");
 					sendCoordinate(v);
 				}
 			});

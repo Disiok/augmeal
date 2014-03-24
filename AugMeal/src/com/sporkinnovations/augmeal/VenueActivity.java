@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,8 +48,8 @@ public class VenueActivity extends Activity {
 	public static final String KEY_NAME = "NAME";
 	public static final String KEY_LOCATION = "LOCATION";
 	public static final String KEY_THUMB_URL ="THUMB_URL";
-	public static final String KEY_ID = "KEY_ID";
-	public static final String KEY_MENU_ID = "KEY_MENU_ID";
+	public static final String KEY_ID = "ID";
+	public static final String KEY_MENU_ID = "MENU_ID";
 	
 	public static final int STATUS = 1;
 	public static final String HASH_MESSAGE = "HASH_MESSAGE";
@@ -114,7 +115,9 @@ public class VenueActivity extends Activity {
 		
 		//Retrieve Adapter
 		adapter = new VenueListAdapter(this, detailList);
+		System.out.println("I got the fucking adapter");
 		list.setAdapter(adapter);
+		System.out.println("I just set the fucking adapter");
 		
 		list.setOnItemClickListener(new OnItemClickListener(){
 			@Override
@@ -157,17 +160,20 @@ public class VenueActivity extends Activity {
 				URL aUrl = new URL(url);
 				HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
 				connection.setRequestMethod(GET);
+				//Starting query
 				connection.connect();
 				int responseCode = connection.getResponseCode();
 				if (responseCode == 200){
 					InputStream inputStream = connection.getInputStream();
-					String response = readStream(inputStream);
+					String response = IOUtils.toString(inputStream);
 					connection.disconnect();
 					responseObject = new JSONObject(response);
 				}
 				else{
 					System.out.println(responseCode);
 				}
+				
+				System.out.println("I got the fucking response");
 
 				JSONObject response = responseObject.getJSONObject("response");
 				JSONArray groups = response.getJSONArray("groups");
@@ -202,6 +208,8 @@ public class VenueActivity extends Activity {
 						infoList.add(info);
 					}
 				}
+				
+				System.out.println("I finished resolving all the fucking JSON");
 			}
 			catch(IOException e){
 				System.out.println("IO Wrong");
@@ -216,22 +224,8 @@ public class VenueActivity extends Activity {
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String,String>> infoList) {
 			detailList = infoList;
+			System.out.println("I finished loading the fucking information");
 			initList();
-		}
-		private String readStream(InputStream inputStream) throws IOException{
-			StringWriter responseWriter = new StringWriter();
-
-			char[] buf = new char[1024];
-			int l = 0;
-
-			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-			while ((l = inputStreamReader.read(buf)) > 0) {
-				responseWriter.write(buf, 0, l);
-			}
-
-			responseWriter.flush();
-			responseWriter.close();
-			return responseWriter.getBuffer().toString();
 		}
 	}
 

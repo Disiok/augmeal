@@ -144,7 +144,6 @@ public class InfoActivity extends Activity {
 			//Build GET request URL
 			String url = LOCU_URL + SEARCH_PATH +
 					"?location=" + coordinate + 
-					"&has_menu=" + "TRUE" +
 					"&name=" + encodedName +
 					"&api_key=" + LOCU_KEY;
 
