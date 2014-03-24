@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="@string/hello_world" />
+        android:layout_marginTop="14dp" />
 
     <ListView
         android:id="@+id/listViewMenu"

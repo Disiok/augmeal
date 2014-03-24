@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +41,9 @@ public class MainActivity extends Activity{
 			latitude = savedInstanceState.getDouble("latitude");
 			
 			//Change Button
-			TextView t = (TextView) findViewById(R.id.text);
+			TextView t = (TextView) findViewById(R.id.initial_message);
 			t.setText(R.string.nearby);
-			ImageView b = (ImageView) findViewById(R.id.imageView);
+			ImageView b = (ImageView) findViewById(R.id.loc_pin);
 			b.setImageResource(R.drawable.loc_pin1);
 			b.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -81,11 +82,12 @@ public class MainActivity extends Activity{
 			Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
 			
 			//Change Button
-			TextView t = (TextView) findViewById(R.id.text);
+			TextView t = (TextView) findViewById(R.id.initial_message);
 			t.setText(R.string.nearby);
-			ImageView b = (ImageView) findViewById(R.id.imageView);
+			ImageView b = (ImageView) findViewById(R.id.loc_pin);
 			b.setImageResource(R.drawable.loc_pin1);
-			b.setOnClickListener(new View.OnClickListener() {
+			RelativeLayout l = (RelativeLayout) findViewById(R.id.bottom_bar);
+			l.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					System.out.println("I just clicked the fucking button");

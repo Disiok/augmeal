@@ -63,7 +63,7 @@ public class VenueActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_venu);
+		setContentView(R.layout.activity_venue);
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -160,12 +160,14 @@ public class VenueActivity extends Activity {
 				URL aUrl = new URL(url);
 				HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
 				connection.setRequestMethod(GET);
-				//Starting query
+				System.out.println("Starting to connect");
 				connection.connect();
 				int responseCode = connection.getResponseCode();
 				if (responseCode == 200){
 					InputStream inputStream = connection.getInputStream();
+					System.out.println("I got the fucking stream");
 					String response = IOUtils.toString(inputStream);
+					System.out.println("I got the fucking response");
 					connection.disconnect();
 					responseObject = new JSONObject(response);
 				}
@@ -173,7 +175,7 @@ public class VenueActivity extends Activity {
 					System.out.println(responseCode);
 				}
 				
-				System.out.println("I got the fucking response");
+				
 
 				JSONObject response = responseObject.getJSONObject("response");
 				JSONArray groups = response.getJSONArray("groups");
