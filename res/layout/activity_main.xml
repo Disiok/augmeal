@@ -23,8 +23,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_margin="30dp"
-        android:background="@drawable/rounded" >
+        android:layout_margin="30dp" >
 
         <ImageView
             android:id="@+id/loc_pin"
